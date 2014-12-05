@@ -16,6 +16,11 @@ import javax.swing.JOptionPane;
  */
 public class Gui extends javax.swing.JFrame {
 
+    private static Gui instance = null;
+
+    /**
+     * Kmponenten der Oberflaeche werden Initialisiert.
+     */
     public Gui() {
         initComponents();
         setLocationRelativeTo(null);
@@ -27,9 +32,6 @@ public class Gui extends javax.swing.JFrame {
     private void initComponents() {
 
         fileChooser = new javax.swing.JFileChooser();
-        jDialog1 = new javax.swing.JDialog();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
@@ -38,26 +40,6 @@ public class Gui extends javax.swing.JFrame {
         nodeMenu = new javax.swing.JMenu();
         addNodeItem = new javax.swing.JMenuItem();
         delNodeItem = new javax.swing.JMenuItem();
-
-        jTextField1.setText("jTextField1");
-
-        jButton1.setText("jButton1");
-
-        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
-        jDialog1.getContentPane().setLayout(jDialog1Layout);
-        jDialog1Layout.setHorizontalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialog1Layout.createSequentialGroup()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1))
-        );
-        jDialog1Layout.setVerticalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jButton1))
-        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -133,6 +115,31 @@ public class Gui extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Das Singletonpattern wird angewand
+     */
+    public static Gui getInstance() {
+        if (instance == null) {
+            instance = new Gui();
+        }
+        return instance;
+    }
+
+    /**
+     * Die Oberflache wird sichtbar gemacht
+     */
+    public void showGui() {
+        this.setVisible(true);
+    }
+
+    /**
+     * @param message Die auszugebene Nachricht
+     * Eine Nachricht wird dem User in einem Seperaten Fenster angezeigt
+     */
+    public void showHint(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
     private void addNodeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNodeItemActionPerformed
 
         String Value = JOptionPane.showInputDialog("Wert des Knotens");
@@ -172,14 +179,12 @@ public class Gui extends javax.swing.JFrame {
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == fileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-        
-        
+
             //Daten des Graphes holen und in file laden
             //file speichern
         }
-        
-        
-        
+
+
     }//GEN-LAST:event_saveItemActionPerformed
 
     public static void main(String args[]) {
@@ -190,21 +195,9 @@ public class Gui extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Gui().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -212,11 +205,8 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem delNodeItem;
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JDialog jDialog1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JMenu nodeMenu;
     private javax.swing.JMenuItem openItem;
     private javax.swing.JMenuItem saveItem;
