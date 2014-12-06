@@ -1,23 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package avltree;
+
+import java.awt.Image;
+import java.io.ByteArrayInputStream;
+import javax.imageio.ImageIO;
 
 /**
  *
  * @author Robin
  */
-public class GraphCreater {
+public class GraphCreator {
 
     private GraphViz graph;
+    private static GraphCreator instance = null;
 
     /**
      *
      * @author Robin
      */
-    public GraphCreater() {
+    public static GraphCreator getInstance() {
+        if (instance == null) {
+            instance = new GraphCreator();
+        }
+        return instance;
+    }
+
+    public GraphCreator() {
+
         graph = new GraphViz();
     }
 
@@ -57,6 +65,7 @@ public class GraphCreater {
      */
     public void loadGraph(String path) {
         try {
+            graph.readSource(path);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,12 +85,18 @@ public class GraphCreater {
      * @return Der Graph wird das jpeg zurueckgegeben
      */
     /// MUSS NOCH ANGEPAST WERDEN
-    public void getGraph() {
-        graph.getGraph(graph.getDotSource(), "jpeg");
+    public Image getGraph() {
+        try {
+            return ImageIO.read(new ByteArrayInputStream(graph.getGraph(graph.getDotSource(), "jpeg")));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
      * Die Informationen des Graphs werden geladen
+     *
      * @param source Die Informationen des Graphs als DotSource
      * @return Wahr oder Falsch, ob der Graph erfolgreich geladen werden konnte
      */

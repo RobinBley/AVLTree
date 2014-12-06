@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package avltree;
 
 import java.io.File;
@@ -133,8 +128,8 @@ public class Gui extends javax.swing.JFrame {
     }
 
     /**
-     * @param message Die auszugebene Nachricht
-     * Eine Nachricht wird dem User in einem Seperaten Fenster angezeigt
+     * @param message Die auszugebene Nachricht Eine Nachricht wird dem User in
+     * einem Seperaten Fenster angezeigt
      */
     public void showHint(String message) {
         JOptionPane.showMessageDialog(this, message);
@@ -143,7 +138,28 @@ public class Gui extends javax.swing.JFrame {
     private void addNodeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNodeItemActionPerformed
 
         String Value = JOptionPane.showInputDialog("Wert des Knotens");
+
+        //TEST
+        loadGraph();
+
+
     }//GEN-LAST:event_addNodeItemActionPerformed
+
+    private void loadGraph() {
+        try {
+            jPanel2.removeAll();
+            ImageIcon img = new ImageIcon(GraphCreator.getInstance().getGraph());
+            JLabel l = new JLabel(img);
+            l.setBounds(jPanel2.getBounds());
+            jPanel2.add(l);
+            repaint();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showHint("Fehler beim laden!");
+        }
+
+    }
+
 
     private void fileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuActionPerformed
     }//GEN-LAST:event_fileMenuActionPerformed
@@ -179,12 +195,13 @@ public class Gui extends javax.swing.JFrame {
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == fileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
+            GraphCreator.getInstance().saveGraph(file.getAbsolutePath());
 
             //Daten des Graphes holen und in file laden
             //file speichern
+        } else {
+            showHint("Problem beim speichern der Datei!");
         }
-
-
     }//GEN-LAST:event_saveItemActionPerformed
 
     public static void main(String args[]) {
