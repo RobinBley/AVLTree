@@ -2,6 +2,7 @@ package avltree;
 
 import java.awt.Image;
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 /**
@@ -29,17 +30,38 @@ public class GraphCreator {
         graph = new GraphViz();
     }
 
+    public void createGraph() {
+        graph.addln(graph.start_graph());
+        Node n = tree.getRoot();
+
+        ArrayList<Node> nextNodes = new ArrayList<Node>();
+        nextNodes.add(n);
+        while (!nextNodes.isEmpty()) {
+            n = nextNodes.get(0);
+            if (n.hasLeft) {
+                addNode(n.getValue(), n.getLeft().getValue());
+                nextNodes.add(n.getLeft());
+            }
+            if (n.hasRight) {
+                addNode(n.getValue(), n.getRight().getValue());
+                nextNodes.add(n.getRight());
+            }
+            nextNodes.remove(0);
+
+        }
+
+        graph.addln(graph.end_graph());
+    }
+
     /**
-     *
      * @param parentNode Der Wert des Knotens, von dem aus ein Pfeil gerichtet
      * wird
      * @param childNode Der Wert des Knotens welche hinzugfuegt wird. Der Wert
      * eines Knotens wird dem Graphen hinzugefuegt
      */
-    public void addNode(int parentNode, int childNode) {
-        graph.addln(graph.start_graph());
+    private void addNode(int parentNode, int childNode) {
+
         graph.addln(String.valueOf(parentNode) + " -> " + String.valueOf(childNode));
-        graph.addln(graph.end_graph());
 
     }
 
