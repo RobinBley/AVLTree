@@ -60,9 +60,9 @@ public class GraphCreator {
     }
 
     /**
-     * Der Graph wird als jpeg gespeichert
-     *
-     * @param path Der Pfad, wo der Graph gespeichert wird
+     * Der aktuell geldene binaere Baum wird als JPEG-Datei gespeichert
+     * @param path Pfad, an dem die Datei gespeichert werden soll
+     * @return eine Bestaetigung ob die Dateioperation erfolgreich war
      */
     public boolean saveGraphAsJpeg(String path) {
         try {
@@ -73,6 +73,11 @@ public class GraphCreator {
         }
     }
     
+    /**
+     * Der aktuell geldene binaere Baum wird als txt-Datei gespeichert
+     * @param path Pfad, an dem die Datei gespeichert werden soll
+     * @return eine Bestaetigung ob die Dateioperation erfolgreich war
+     */
     public boolean saveGraphAsTxt(String path){
         try {
             graph.writeGraphToFile(graph.getGraph(graph.getDotSource(), "txt"), path);
@@ -87,6 +92,7 @@ public class GraphCreator {
      * Ein Graph wird geladen
      *
      * @param path Der Pfad, wo sich die Datei befindet
+     * @return Bestaetigung, ob das Laden des Graphs erfolgreich war
      */
     public boolean loadGraph(String path) {
         try {

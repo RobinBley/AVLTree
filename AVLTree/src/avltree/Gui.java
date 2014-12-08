@@ -121,7 +121,7 @@ public class Gui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Die Oberflache wird sichtbar gemacht
+     * Die Oberflache wird sichtbar
      */
     public void showGui() {
         this.setVisible(true);
@@ -135,11 +135,17 @@ public class Gui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, message);
     }
 
+    /**
+     * Der User wird aufgefordert ein Wert einzugeben, welcher dem Binaeren Baum
+     * hinzugefuegt werden soll
+     */
     private void addNodeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNodeItemActionPerformed
 
         try {
+            //Ein seperates Fenster wird gestartet, in dem der User ein Wert eingeben soll
             String Value = JOptionPane.showInputDialog("Wert des Knotens");
-            Controler.getInstance().addNode(Integer.valueOf(Value));
+            //Der eingegebene Wert wird dem binaeren Baum hinzugefuegt
+            controler.addNode(Integer.valueOf(Value));
 
         } catch (Exception e) {
             showHint("Falsche Eingabe!");
@@ -148,6 +154,11 @@ public class Gui extends javax.swing.JFrame {
 
     }//GEN-LAST:event_addNodeItemActionPerformed
 
+    /**
+     * Eine Grafik wird in der Oberflache angezeigt
+     *
+     * @param l Ein Label, welches den Graphen als Grafik enthaelt
+     */
     public void showGraph(JLabel l) {
         jScrollPane1.removeAll();
         jScrollPane1.add(l);
@@ -168,20 +179,35 @@ public class Gui extends javax.swing.JFrame {
 //        }
 //
 //    }
-
+    /**
+     *
+     * @deprecated
+     */
     private void fileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuActionPerformed
     }//GEN-LAST:event_fileMenuActionPerformed
 
+    /**
+     * Der User wird aufgefordert ein Wert einzugeben, welcher aus dem Binaeren
+     * Baum entfernt werden soll
+     */
     private void delNodeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delNodeItemActionPerformed
         try {
+            //Ein seperates Fenster wird gestartet, in dem der User ein Wert eingeben soll
             String Value = JOptionPane.showInputDialog("Wert des Knotens");
-            Controler.getInstance().delNode(Integer.valueOf(Value));
+            //Der eingegebene Wert wird aus dem Baum entfernt
+            controler.delNode(Integer.valueOf(Value));
 
         } catch (Exception e) {
             showHint("Falsche Eingabe!");
         }
     }//GEN-LAST:event_delNodeItemActionPerformed
 
+    /**
+     * Ein Filebrowser wird gestartet, in dem der User eine Datei auswaehlen
+     * kann, welches einen Graphen enthaelt. Dieser Graph wird je nach Dateityp
+     * geladen und ist nun veraenderbar oder nicht.
+     *
+     */
     private void openItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openItemActionPerformed
         //Ein Filebrower wird geoeffnet und die ausgewaehlte Datei wird erstellt.
         int returnVal = fileChooser.showOpenDialog(this);
@@ -189,17 +215,21 @@ public class Gui extends javax.swing.JFrame {
             File file = fileChooser.getSelectedFile();
 
             try {
-                //Aktuelle Images werden entfernt
+                //Aktuelle Inhalte des Panels werden entfernt
                 jScrollPane1.removeAll();
+                //Wenn die ausgewaehlte datei von typ JPEG ist...
                 if (file.getPath().endsWith(".jpeg")) {
-
-                    //Die geladene Datei wird als Image in das Panel
+                    //wird die geladene Datei als Grafik in das Panel geladen
                     ImageIcon img = new ImageIcon(file.getName());
                     JLabel l = new JLabel(img);
                     l.setBounds(jScrollPane1.getBounds());
                     jScrollPane1.add(l);
+                    nodeMenu.setEnabled(false);
+                    //Wenn die ausgewaehlte datei von typ txt ist..
                 } else if (file.getPath().endsWith(".txt")) {
-                    Controler.getInstance().loadGraph(file.getAbsolutePath());
+                    //werden die Daten eines Binaeren Baums geladen. Aus diesen Daten wird eine Grafik generiert. 
+                    controler.loadGraph(file.getAbsolutePath());
+                    nodeMenu.setEnabled(true);
                 } else {
                     showHint("Falscher Dateityp");
                 }
@@ -212,12 +242,15 @@ public class Gui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_openItemActionPerformed
 
+    
+    /**
+     * Der aktuell geladene binaere Baum wird in eine Datei als JPEG-Format gespeichert
+     */
     private void jpegItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jpegItemActionPerformed
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == fileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            Controler.getInstance().saveTreeAsJpeg(file.getAbsolutePath());
-
+            controler.saveTreeAsJpeg(file.getAbsolutePath());
 
             //Daten des Graphes holen und in file laden
             //file speichern
@@ -226,11 +259,14 @@ public class Gui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jpegItemActionPerformed
 
+      /**
+     * Der aktuell geladene binaere Baum wird in eine Datei als txt-Format gespeichert
+     */
     private void txtItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtItemActionPerformed
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == fileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            Controler.getInstance().saveTreeAsTxt(file.getAbsolutePath());
+            controler.saveTreeAsTxt(file.getAbsolutePath());
 
             //Daten des Graphes holen und in file laden
             //file speichern
@@ -239,11 +275,14 @@ public class Gui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtItemActionPerformed
 
+    /**
+     * Der aktuel geladene binaere Baum wird geloescht und ein neuer wird erzeugt.
+     */
     private void newTreeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTreeItemActionPerformed
         try {
             String Value = JOptionPane.showInputDialog("Wert des ersten Knotens");
-            Controler.getInstance().newTree(Integer.valueOf(Value));
-            
+            controler.newTree(Integer.valueOf(Value));
+
         } catch (Exception e) {
             showHint("Falsche Eingabe!");
         }
