@@ -2,7 +2,6 @@ package avltree;
 
 import java.awt.Image;
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 /**
@@ -13,26 +12,19 @@ public class GraphCreator {
 
     private GraphViz graph;
     private Gui gui;
-    private static GraphCreator instance = null;
 
     /**
      *
      * @author Robin
      */
-    public static GraphCreator getInstance() {
-        if (instance == null) {
-            instance = new GraphCreator();
-        }
-        return instance;
-    }
+
 
     public GraphCreator() {
 
         graph = new GraphViz();
-        gui = Gui.getInstance();
     }
 
-    public void createGraph() {
+    public void createGraph(AVLTree tree) {
 //        graph.addln(graph.start_graph());
 //        Node n = tree.getRoot();
 //
@@ -72,12 +64,22 @@ public class GraphCreator {
      *
      * @param path Der Pfad, wo der Graph gespeichert wird
      */
-    public void saveGraph(String path) {
+    public boolean saveGraphAsJpeg(String path) {
         try {
             graph.writeGraphToFile(graph.getGraph(graph.getDotSource(), "jpeg"), path);
-
+            return true;
         } catch (Exception e) {
-            Gui.getInstance().showHint("Graph konnte nicht gespeichert werden!");
+            return false;
+        }
+    }
+    
+    public boolean saveGraphAsTxt(String path){
+        try {
+            graph.writeGraphToFile(graph.getGraph(graph.getDotSource(), "txt"), path);
+            
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
@@ -86,12 +88,12 @@ public class GraphCreator {
      *
      * @param path Der Pfad, wo sich die Datei befindet
      */
-    public void loadGraph(String path) {
+    public boolean loadGraph(String path) {
         try {
             graph.readSource(path);
-
+            return true;
         } catch (Exception e) {
-            Gui.getInstance().showHint("Graph konnte nicht geladen werden!");
+            return false;
         }
 
     }

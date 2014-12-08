@@ -11,8 +11,6 @@ import javax.swing.JOptionPane;
  */
 public class Gui extends javax.swing.JFrame {
 
-    private static Gui instance = null;
-
     /**
      * Kmponenten der Oberflaeche werden Initialisiert.
      */
@@ -34,6 +32,7 @@ public class Gui extends javax.swing.JFrame {
         saveMenu = new javax.swing.JMenu();
         txtItem = new javax.swing.JMenuItem();
         jpegItem = new javax.swing.JMenuItem();
+        newTreeItem = new javax.swing.JMenuItem();
         nodeMenu = new javax.swing.JMenu();
         addNodeItem = new javax.swing.JMenuItem();
         delNodeItem = new javax.swing.JMenuItem();
@@ -75,6 +74,14 @@ public class Gui extends javax.swing.JFrame {
 
         fileMenu.add(saveMenu);
 
+        newTreeItem.setText("New Tree");
+        newTreeItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newTreeItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(newTreeItem);
+
         jMenuBar1.add(fileMenu);
 
         nodeMenu.setText("Node");
@@ -114,16 +121,6 @@ public class Gui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Das Singletonpattern wird angewand
-     */
-    public static Gui getInstance() {
-        if (instance == null) {
-            instance = new Gui();
-        }
-        return instance;
-    }
-
-    /**
      * Die Oberflache wird sichtbar gemacht
      */
     public void showGui() {
@@ -140,35 +137,48 @@ public class Gui extends javax.swing.JFrame {
 
     private void addNodeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addNodeItemActionPerformed
 
-        String Value = JOptionPane.showInputDialog("Wert des Knotens");
+        try {
+            String Value = JOptionPane.showInputDialog("Wert des Knotens");
+            Controler.getInstance().addNode(Integer.valueOf(Value));
 
-        //TEST
-        loadGraph();
+        } catch (Exception e) {
+            showHint("Falsche Eingabe!");
+        }
 
 
     }//GEN-LAST:event_addNodeItemActionPerformed
 
-    private void loadGraph() {
-        try {
-            jScrollPane1.removeAll();
-            ImageIcon img = new ImageIcon(GraphCreator.getInstance().getGraph());
-            JLabel l = new JLabel(img);
-            l.setBounds(jScrollPane1.getBounds());
-            jScrollPane1.add(l);
-            repaint();
-        } catch (Exception e) {
-            e.printStackTrace();
-            showHint("Fehler beim laden!");
-        }
-
+    public void showGraph(JLabel l) {
+        jScrollPane1.removeAll();
+        jScrollPane1.add(l);
     }
 
+//    private void loadGraph() {
+//        try {
+//            jScrollPane1.removeAll();
+//            ImageIcon img = new ImageIcon(GraphCreator.getInstance().getGraph());
+//            JLabel l = new JLabel(img);
+//            l.setBounds(jScrollPane1.getBounds());
+//            jScrollPane1.add(l);
+//            repaint();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            showHint("Fehler beim laden!");
+//        }
+//
+//    }
 
     private void fileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuActionPerformed
     }//GEN-LAST:event_fileMenuActionPerformed
 
     private void delNodeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delNodeItemActionPerformed
-        String Value = JOptionPane.showInputDialog("Wert des Knotens");
+        try {
+            String Value = JOptionPane.showInputDialog("Wert des Knotens");
+            Controler.getInstance().delNode(Integer.valueOf(Value));
+
+        } catch (Exception e) {
+            showHint("Falsche Eingabe!");
+        }
     }//GEN-LAST:event_delNodeItemActionPerformed
 
     private void openItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openItemActionPerformed
@@ -188,8 +198,7 @@ public class Gui extends javax.swing.JFrame {
                     l.setBounds(jScrollPane1.getBounds());
                     jScrollPane1.add(l);
                 } else if (file.getPath().endsWith(".txt")) {
-                    GraphCreator.getInstance().loadGraph(file.getAbsolutePath());
-                    loadGraph();
+                    Controler.getInstance().loadGraph(file.getAbsolutePath());
                 } else {
                     showHint("Falscher Dateityp");
                 }
@@ -206,12 +215,8 @@ public class Gui extends javax.swing.JFrame {
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == fileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            if (file.getPath().endsWith(".jpeg")) {
-                GraphCreator.getInstance().saveGraph(file.getAbsolutePath());
-            } else {
-                GraphCreator.getInstance().saveGraph(file.getAbsolutePath() + ".jpeg");
+            Controler.getInstance().saveTreeAsJpeg(file.getAbsolutePath());
 
-            }
 
             //Daten des Graphes holen und in file laden
             //file speichern
@@ -224,12 +229,7 @@ public class Gui extends javax.swing.JFrame {
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == fileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            if (file.getPath().endsWith(".txt")) {
-                GraphCreator.getInstance().saveGraph(file.getAbsolutePath());
-            } else {
-                GraphCreator.getInstance().saveGraph(file.getAbsolutePath() + ".txt");
-
-            }
+            Controler.getInstance().saveTreeAsTxt(file.getAbsolutePath());
 
             //Daten des Graphes holen und in file laden
             //file speichern
@@ -238,18 +238,10 @@ public class Gui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtItemActionPerformed
 
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    private void newTreeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTreeItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_newTreeItemActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addNodeItem;
@@ -259,6 +251,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem jpegItem;
+    private javax.swing.JMenuItem newTreeItem;
     private javax.swing.JMenu nodeMenu;
     private javax.swing.JMenuItem openItem;
     private javax.swing.JMenu saveMenu;
