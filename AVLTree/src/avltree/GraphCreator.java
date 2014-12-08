@@ -32,9 +32,9 @@ public class GraphCreator {
 
     public void createGraph() {
         graph.addln(graph.start_graph());
-        Node n = tree.getRoot();
+        AVLNode n = tree.getRoot();
 
-        ArrayList<Node> nextNodes = new ArrayList<Node>();
+        ArrayList<AVLNode> nextNodes = new ArrayList<AVLNode>();
         nextNodes.add(n);
         while (!nextNodes.isEmpty()) {
             n = nextNodes.get(0);
