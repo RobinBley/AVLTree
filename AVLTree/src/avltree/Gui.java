@@ -151,6 +151,7 @@ public class Gui extends javax.swing.JFrame {
     public void showGraph(JLabel l) {
         jScrollPane1.removeAll();
         jScrollPane1.add(l);
+        repaint();
     }
 
 //    private void loadGraph() {
@@ -239,7 +240,13 @@ public class Gui extends javax.swing.JFrame {
     }//GEN-LAST:event_txtItemActionPerformed
 
     private void newTreeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newTreeItemActionPerformed
-        // TODO add your handling code here:
+        try {
+            String Value = JOptionPane.showInputDialog("Wert des ersten Knotens");
+            Controler.getInstance().newTree(Integer.valueOf(Value));
+            
+        } catch (Exception e) {
+            showHint("Falsche Eingabe!");
+        }
     }//GEN-LAST:event_newTreeItemActionPerformed
 
 
@@ -257,4 +264,5 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenu saveMenu;
     private javax.swing.JMenuItem txtItem;
     // End of variables declaration//GEN-END:variables
+    private Controler controler = Controler.getInstance();
 }

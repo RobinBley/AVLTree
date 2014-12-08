@@ -42,6 +42,7 @@ public class Controler {
 
     public void newTree(int root) {
         tree = new AVLTree(new AVLNode(root));
+        this.showCurrentGraph();
     }
 
     public void loadGraph(String path) {
