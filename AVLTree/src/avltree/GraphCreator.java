@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 public class GraphCreator {
 
     private GraphViz graph;
+    private Gui gui;
     private static GraphCreator instance = null;
 
     /**
@@ -28,29 +29,30 @@ public class GraphCreator {
     public GraphCreator() {
 
         graph = new GraphViz();
+        gui = Gui.getInstance();
     }
 
     public void createGraph() {
-        graph.addln(graph.start_graph());
-        Node n = tree.getRoot();
-
-        ArrayList<Node> nextNodes = new ArrayList<Node>();
-        nextNodes.add(n);
-        while (!nextNodes.isEmpty()) {
-            n = nextNodes.get(0);
-            if (n.hasLeft) {
-                addNode(n.getValue(), n.getLeft().getValue());
-                nextNodes.add(n.getLeft());
-            }
-            if (n.hasRight) {
-                addNode(n.getValue(), n.getRight().getValue());
-                nextNodes.add(n.getRight());
-            }
-            nextNodes.remove(0);
-
-        }
-
-        graph.addln(graph.end_graph());
+//        graph.addln(graph.start_graph());
+//        Node n = tree.getRoot();
+//
+//        ArrayList<Node> nextNodes = new ArrayList<Node>();
+//        nextNodes.add(n);
+//        while (!nextNodes.isEmpty()) {
+//            n = nextNodes.get(0);
+//            if (n.hasLeft) {
+//                addNode(n.getValue(), n.getLeft().getValue());
+//                nextNodes.add(n.getLeft());
+//            }
+//            if (n.hasRight) {
+//                addNode(n.getValue(), n.getRight().getValue());
+//                nextNodes.add(n.getRight());
+//            }
+//            nextNodes.remove(0);
+//
+//        }
+//
+//        graph.addln(graph.end_graph());
     }
 
     /**
@@ -75,7 +77,6 @@ public class GraphCreator {
             graph.writeGraphToFile(graph.getGraph(graph.getDotSource(), "jpeg"), path);
 
         } catch (Exception e) {
-            e.printStackTrace();
             Gui.getInstance().showHint("Graph konnte nicht gespeichert werden!");
         }
     }
@@ -90,7 +91,6 @@ public class GraphCreator {
             graph.readSource(path);
 
         } catch (Exception e) {
-            e.printStackTrace();
             Gui.getInstance().showHint("Graph konnte nicht geladen werden!");
         }
 
@@ -111,7 +111,6 @@ public class GraphCreator {
         try {
             return ImageIO.read(new ByteArrayInputStream(graph.getGraph(graph.getDotSource(), "jpeg")));
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

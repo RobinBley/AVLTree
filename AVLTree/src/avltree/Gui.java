@@ -27,27 +27,18 @@ public class Gui extends javax.swing.JFrame {
     private void initComponents() {
 
         fileChooser = new javax.swing.JFileChooser();
-        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openItem = new javax.swing.JMenuItem();
-        saveItem = new javax.swing.JMenuItem();
+        saveMenu = new javax.swing.JMenu();
+        txtItem = new javax.swing.JMenuItem();
+        jpegItem = new javax.swing.JMenuItem();
         nodeMenu = new javax.swing.JMenu();
         addNodeItem = new javax.swing.JMenuItem();
         delNodeItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 614, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 419, Short.MAX_VALUE)
-        );
 
         fileMenu.setText("File");
         fileMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -64,13 +55,25 @@ public class Gui extends javax.swing.JFrame {
         });
         fileMenu.add(openItem);
 
-        saveItem.setText("Save");
-        saveItem.addActionListener(new java.awt.event.ActionListener() {
+        saveMenu.setText("Save as");
+
+        txtItem.setText("Txt");
+        txtItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveItemActionPerformed(evt);
+                txtItemActionPerformed(evt);
             }
         });
-        fileMenu.add(saveItem);
+        saveMenu.add(txtItem);
+
+        jpegItem.setText("jpeg");
+        jpegItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jpegItemActionPerformed(evt);
+            }
+        });
+        saveMenu.add(jpegItem);
+
+        fileMenu.add(saveMenu);
 
         jMenuBar1.add(fileMenu);
 
@@ -100,11 +103,11 @@ public class Gui extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
         );
 
         pack();
@@ -147,11 +150,11 @@ public class Gui extends javax.swing.JFrame {
 
     private void loadGraph() {
         try {
-            jPanel2.removeAll();
+            jScrollPane1.removeAll();
             ImageIcon img = new ImageIcon(GraphCreator.getInstance().getGraph());
             JLabel l = new JLabel(img);
-            l.setBounds(jPanel2.getBounds());
-            jPanel2.add(l);
+            l.setBounds(jScrollPane1.getBounds());
+            jScrollPane1.add(l);
             repaint();
         } catch (Exception e) {
             e.printStackTrace();
@@ -176,12 +179,20 @@ public class Gui extends javax.swing.JFrame {
 
             try {
                 //Aktuelle Images werden entfernt
-                jPanel2.removeAll();
-                //Die geladene Datei wird als Image in das Panel
-                ImageIcon img = new ImageIcon(file.getName());
-                JLabel l = new JLabel(img);
-                l.setBounds(jPanel2.getBounds());
-                jPanel2.add(l);
+                jScrollPane1.removeAll();
+                if (file.getPath().endsWith(".jpeg")) {
+
+                    //Die geladene Datei wird als Image in das Panel
+                    ImageIcon img = new ImageIcon(file.getName());
+                    JLabel l = new JLabel(img);
+                    l.setBounds(jScrollPane1.getBounds());
+                    jScrollPane1.add(l);
+                } else if (file.getPath().endsWith(".txt")) {
+                    GraphCreator.getInstance().loadGraph(file.getAbsolutePath());
+                    loadGraph();
+                } else {
+                    showHint("Falscher Dateityp");
+                }
                 repaint();
 
             } catch (Exception ex) {
@@ -191,18 +202,41 @@ public class Gui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_openItemActionPerformed
 
-    private void saveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveItemActionPerformed
+    private void jpegItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jpegItemActionPerformed
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == fileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            GraphCreator.getInstance().saveGraph(file.getAbsolutePath());
+            if (file.getPath().endsWith(".jpeg")) {
+                GraphCreator.getInstance().saveGraph(file.getAbsolutePath());
+            } else {
+                GraphCreator.getInstance().saveGraph(file.getAbsolutePath() + ".jpeg");
+
+            }
 
             //Daten des Graphes holen und in file laden
             //file speichern
         } else {
             showHint("Problem beim speichern der Datei!");
         }
-    }//GEN-LAST:event_saveItemActionPerformed
+    }//GEN-LAST:event_jpegItemActionPerformed
+
+    private void txtItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtItemActionPerformed
+        int returnVal = fileChooser.showOpenDialog(this);
+        if (returnVal == fileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (file.getPath().endsWith(".txt")) {
+                GraphCreator.getInstance().saveGraph(file.getAbsolutePath());
+            } else {
+                GraphCreator.getInstance().saveGraph(file.getAbsolutePath() + ".txt");
+
+            }
+
+            //Daten des Graphes holen und in file laden
+            //file speichern
+        } else {
+            showHint("Problem beim speichern der Datei!");
+        }
+    }//GEN-LAST:event_txtItemActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -223,9 +257,11 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem jpegItem;
     private javax.swing.JMenu nodeMenu;
     private javax.swing.JMenuItem openItem;
-    private javax.swing.JMenuItem saveItem;
+    private javax.swing.JMenu saveMenu;
+    private javax.swing.JMenuItem txtItem;
     // End of variables declaration//GEN-END:variables
 }
