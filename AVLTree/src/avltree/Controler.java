@@ -17,9 +17,13 @@ public class Controler {
     /**
      * Initialisierung der Komponenten
      */
-    public void Controler() {
-        gui = new Gui();
+    public Controler() {
         creator = new GraphCreator();
+    }
+
+    public void startGui() {
+        gui = new Gui();
+        gui.setVisible(true);
     }
 
     /**
@@ -64,7 +68,7 @@ public class Controler {
         creator.loadGraph(path);
 
         //////////////////////Image der Gui uebergeben
-        gui.showGraph(null);
+        showCurrentGraph();
     }
 
     /**
@@ -130,6 +134,7 @@ public class Controler {
 
     /**
      * Dem aktuellen Baum wird ein Wert entfernt
+     *
      * @param node Der zu entfernende Wert
      */
     public void delNode(int node) {

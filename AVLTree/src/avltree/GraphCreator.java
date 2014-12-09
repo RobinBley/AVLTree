@@ -2,6 +2,7 @@ package avltree;
 
 import java.awt.Image;
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 /**
@@ -11,7 +12,6 @@ import javax.imageio.ImageIO;
 public class GraphCreator {
 
     private GraphViz graph;
-    private Gui gui;
 
     /**
      *
@@ -25,26 +25,27 @@ public class GraphCreator {
     }
 
     public void createGraph(AVLTree tree) {
-//        graph.addln(graph.start_graph());
-//        Node n = tree.getRoot();
-//
-//        ArrayList<Node> nextNodes = new ArrayList<Node>();
-//        nextNodes.add(n);
-//        while (!nextNodes.isEmpty()) {
-//            n = nextNodes.get(0);
-//            if (n.hasLeft) {
-//                addNode(n.getValue(), n.getLeft().getValue());
-//                nextNodes.add(n.getLeft());
-//            }
-//            if (n.hasRight) {
-//                addNode(n.getValue(), n.getRight().getValue());
-//                nextNodes.add(n.getRight());
-//            }
-//            nextNodes.remove(0);
-//
-//        }
-//
-//        graph.addln(graph.end_graph());
+        
+        graph.addln(graph.start_graph());
+        AVLNode n = tree.root;
+
+        ArrayList<AVLNode> nextNodes = new ArrayList<>();
+        nextNodes.add(n);
+        while (!nextNodes.isEmpty()) {
+            n = nextNodes.get(0);
+            if (n.getLeftChild() != null) {
+                addNode(n.getKey(), n.getLeftChild().getKey());
+                nextNodes.add(n.getLeftChild());
+            }
+            if (n.getRightChild() != null) {
+                addNode(n.getKey(), n.getRightChild().getKey());
+                nextNodes.add(n.getRightChild());
+            }
+            nextNodes.remove(0);
+
+        }
+
+        graph.addln(graph.end_graph());
     }
 
     /**
@@ -69,6 +70,7 @@ public class GraphCreator {
             graph.writeGraphToFile(graph.getGraph(graph.getDotSource(), "jpeg"), path);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
