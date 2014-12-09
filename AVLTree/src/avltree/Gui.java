@@ -51,6 +51,11 @@ public class Gui extends javax.swing.JFrame {
         addNodeItem = new javax.swing.JMenuItem();
         delNodeItem = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
+        
+//        jScrollPane1.createVerticalScrollBar();
+//        jScrollPane1.createHorizontalScrollBar();
+//        jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//        jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -167,20 +172,6 @@ public class Gui extends javax.swing.JFrame {
         repaint();
     }
 
-//    private void loadGraph() {
-//        try {
-//            jScrollPane1.removeAll();
-//            ImageIcon img = new ImageIcon(GraphCreator.getInstance().getGraph());
-//            JLabel l = new JLabel(img);
-//            l.setBounds(jScrollPane1.getBounds());
-//            jScrollPane1.add(l);
-//            repaint();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            showHint("Fehler beim laden!");
-//        }
-//
-//    }
     /**
      * Der User wird aufgefordert ein Wert einzugeben, welcher aus dem Binaeren
      * Baum entfernt werden soll
@@ -217,8 +208,12 @@ public class Gui extends javax.swing.JFrame {
                     //wird die geladene Datei als Grafik in das Panel geladen
                     ImageIcon img = new ImageIcon(file.getAbsolutePath());
                     JLabel l = new JLabel(img);
-                    l.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
-                    
+                    if (img.getIconHeight() < jScrollPane1.getHeight() && img.getIconWidth() < jScrollPane1.getHeight()) {
+                        l.setBounds(jScrollPane1.getBounds());
+                    } else {
+                        l.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
+
+                    }
                     jScrollPane1.add(l);
 
                     nodeMenu.setEnabled(false);
