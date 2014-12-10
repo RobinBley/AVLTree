@@ -1,5 +1,7 @@
 package avltree;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 /**
@@ -65,8 +67,7 @@ public class Controler {
      */
     public void loadGraph(String path) {
         creator.loadGraph(path);
-
-        //////////////////////Image der Gui uebergeben
+        gui.showGraph(new ImageIcon(creator.getGraph()));
         showCurrentGraph();
     }
 
@@ -97,15 +98,13 @@ public class Controler {
                 //Ein Graph des aktuellen Baums wird erzeugt
                 creator.createGraph(tree);
                 //Der Graph wird als Grafik in ein Label geladen, welches der Oberflaeche uebergeben wird
-                ImageIcon img = new ImageIcon(creator.getGraph());
-                gui.showGraph(img);
-                System.out.println(img.getIconHeight());
-                System.out.println(img.getIconWidth());
             } else {
-                gui.showHint("Keine Werte enthalten!");
 
             }
+            ImageIcon img = new ImageIcon(creator.getGraph());
+            gui.showGraph(img);
         } catch (Exception e) {
+            gui.showHint("Keine Werte enthalten!");
             e.printStackTrace();
         }
 
@@ -145,13 +144,17 @@ public class Controler {
         if (tree == null) {
             gui.showHint("Kein Baum geladen");
         } else {
-            ///////////////////////////////////////////////////////////////////////////////
-//            if(tree.findNode(node) == null){
-//                gui.showHint("Node nicht enthalten");
-//            }
+            try {
+                if (tree.findNode(node) == null) {
+                    gui.showHint("Node nicht enthalten");
+                }
+                ///////////////////////////////////////////////////////////////////////////////
 //            tree.deleteNode(node);
-            //////////////////////////////////////////////////////////////////////////////
-            showCurrentGraph();
+                //////////////////////////////////////////////////////////////////////////////
+                showCurrentGraph();
+            } catch (Exception ex) {
+                Logger.getLogger(Controler.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

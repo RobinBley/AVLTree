@@ -120,6 +120,9 @@ public class Gui extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
+        nodeMenu.setEnabled(false);
+        saveMenu.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -211,18 +214,16 @@ public class Gui extends javax.swing.JFrame {
                 if (!file.getPath().endsWith(".txt")) {
                     //wird die geladene Datei als Grafik in das Panel geladen
                     showGraph(new ImageIcon(file.getAbsolutePath()));
-                    nodeMenu.setEnabled(false);
-                    saveMenu.setEnabled(false);
 
                     //Wenn die ausgewaehlte datei von typ txt ist..
                 } else {
                     //werden die Daten eines Binaeren Baums geladen. Aus diesen Daten wird eine Grafik generiert. 
                     Controler.getInstance().loadGraph(file.getAbsolutePath());
-                    nodeMenu.setEnabled(true);
-                    saveMenu.setEnabled(true);
                     repaint();
 
                 }
+                nodeMenu.setEnabled(false);
+                saveMenu.setEnabled(false);
 
             } catch (Exception ex) {
                 showHint("Falscher Dateityp");
@@ -239,12 +240,9 @@ public class Gui extends javax.swing.JFrame {
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == fileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            System.out.println(file.getAbsoluteFile());
-            Controler.getInstance();
+            //Daten des Graphes holen und in file laden und speichern
             Controler.getInstance().saveTreeAsJpeg(file.getAbsolutePath());
 
-            //Daten des Graphes holen und in file laden
-            //file speichern
         } else {
             showHint("Problem beim speichern der Datei!");
         }
@@ -258,10 +256,9 @@ public class Gui extends javax.swing.JFrame {
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == fileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
+            //Daten des Graphes holen und in file laden und speichern
             Controler.getInstance().saveTreeAsTxt(file.getAbsolutePath());
 
-            //Daten des Graphes holen und in file laden
-            //file speichern
         } else {
             showHint("Problem beim speichern der Datei!");
         }

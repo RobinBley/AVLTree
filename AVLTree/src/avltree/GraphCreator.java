@@ -1,10 +1,8 @@
 package avltree;
 
 import java.awt.Image;
-import java.awt.image.RenderedImage;
-import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -70,6 +68,9 @@ public class GraphCreator {
      */
     public boolean saveGraphAsJpeg(String path) {
         try {
+            if (!path.endsWith(".jpeg")) {
+                path = path + ".jpeg";
+            }
             graph.writeGraphToFile(graph.getGraph(graph.getDotSource(), "jpeg"), path);
             return true;
         } catch (Exception e) {
@@ -86,10 +87,18 @@ public class GraphCreator {
      */
     public boolean saveGraphAsTxt(String path) {
         try {
-            graph.writeGraphToFile(graph.getGraph(graph.getDotSource(), "txt"), path);
+            if (!path.endsWith(".txt")) {
+                path = path + ".txt";
+            }
+            PrintWriter out = new PrintWriter(path);
+
+            out.println(graph.getDotSource());
+            out.close();
+//            graph.writeGraphToFile(graph.getGraph(graph.getDotSource(), "txt"), path);
 
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -100,12 +109,11 @@ public class GraphCreator {
      * @param path Der Pfad, wo sich die Datei befindet
      * @return Bestaetigung, ob das Laden des Graphs erfolgreich war
      */
-    public boolean loadGraph(String path) {
+    public void loadGraph(String path) {
         try {
             graph.readSource(path);
-            return true;
         } catch (Exception e) {
-            return false;
+            e.printStackTrace();
         }
 
     }
@@ -120,7 +128,6 @@ public class GraphCreator {
     /**
      * @return Der Graph wird das jpeg zurueckgegeben
      */
-    /// MUSS NOCH ANGEPAST WERDEN
     public Image getGraph() {
         try {
             return new ImageIcon(graph.getGraph(graph.getDotSource(), "jpeg")).getImage();
