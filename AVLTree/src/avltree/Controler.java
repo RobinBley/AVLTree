@@ -1,7 +1,5 @@
 package avltree;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 /**
@@ -22,6 +20,9 @@ public class Controler {
         creator = new GraphCreator();
     }
 
+    /**
+     * Die Oberflache des Programms wird erstellt und gestartet
+     */
     public void startGui() {
         gui = new Gui();
         gui.setVisible(true);
@@ -66,13 +67,14 @@ public class Controler {
      * @param path Pfad, an dem sich der Graph befindet
      */
     public void loadGraph(String path) {
+        //Der Graph, welcher sich am uebergebenen Pfad befindet wird geladen
         creator.loadGraph(path);
+        //Der geladene Graph wird in der Oberflaeche angezeigt
         gui.showGraph(new ImageIcon(creator.getGraph()));
-        showCurrentGraph();
     }
 
     /**
-     * Der Baum wird als JPEG-Datei gespeichert
+     * Der aktuelle Baum wird als JPEG-Datei gespeichert
      *
      * @param path Pfad, an dem sich die Datei befindet
      */
@@ -81,7 +83,7 @@ public class Controler {
     }
 
     /**
-     * Der Baum wird als txt-Datei gespeichert
+     * Der aktuelle Baum wird als txt-Datei gespeichert
      *
      * @param path Pfad, an dem sich die Datei befindet
      */
@@ -90,22 +92,22 @@ public class Controler {
     }
 
     /**
-     * Der aktuelle Baum wird das Graph in die Oberflaeche geladen
+     * Der aktuelle Baum wird als Grafik in die Oberflaeche geladen
      */
     private void showCurrentGraph() {
         try {
+            //Wenn ein Baum existiert...
             if (tree != null) {
-                //Ein Graph des aktuellen Baums wird erzeugt
+                //wird der Graph des aktuellen Baums erzeugt
                 creator.createGraph(tree);
-                //Der Graph wird als Grafik in ein Label geladen, welches der Oberflaeche uebergeben wird
             } else {
 
             }
             ImageIcon img = new ImageIcon(creator.getGraph());
+            //Der Graph wird als Grafik in der Oberflaeche angezeigt
             gui.showGraph(img);
         } catch (Exception e) {
             gui.showHint("Keine Werte enthalten!");
-            e.printStackTrace();
         }
 
     }
@@ -122,9 +124,10 @@ public class Controler {
             newTree(node);
         } else {
             try {
+                // sonst wird dem aktuellen Baum der neue Knoten hinzugefuegt
                 tree.insertNode(node);
                 //
-            } catch (Exception ex) {
+            } catch (Exception e) {
                 return false;
             }
             //Der veraenderte oder neue Baum wird als Grafik in der Oberflaeche angezeigt
@@ -141,10 +144,12 @@ public class Controler {
      * @param node Der zu entfernende Wert
      */
     public void delNode(int node) {
+        //Wenn kein Baum existiert wird es dem User mitgeteilt
         if (tree == null) {
             gui.showHint("Kein Baum geladen");
         } else {
             try {
+                //Wenn ein Baum existiert, wird geprueft ob der zuloeschende Wert existiert und geloescht
                 if (tree.findNode(node) == null) {
                     gui.showHint("Node nicht enthalten");
                 }
@@ -153,7 +158,6 @@ public class Controler {
                 //////////////////////////////////////////////////////////////////////////////
                 showCurrentGraph();
             } catch (Exception ex) {
-                Logger.getLogger(Controler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

@@ -1,8 +1,10 @@
 package avltree;
 
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.io.File;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,21 +27,20 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem openItem;
     private javax.swing.JMenu saveMenu;
     private javax.swing.JMenuItem txtItem;
-    private JPanel panel;
+    private javax.swing.JPanel panel;
 
     /**
      * Kmponenten der Oberflaeche werden Initialisiert.
      */
     public Gui() {
         initComponents();
-//        jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setWheelScrollingEnabled(true);
         setLocationRelativeTo(null);
 
     }
 
     private void initComponents() {
-
+        //Initialisierung der Komponenten
         fileChooser = new javax.swing.JFileChooser();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
@@ -52,83 +53,74 @@ public class Gui extends javax.swing.JFrame {
         addNodeItem = new javax.swing.JMenuItem();
         delNodeItem = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
-        panel = new JPanel();
+        panel = new javax.swing.JPanel();
+        //Hintergrund des Panels der Oberflache wird Weiß gesetzt
         panel.setBackground(Color.WHITE);
-
+        //Dem Scrollpane wird das Panel hinzugefuegt und Autoscroll wird aktiviert
         jScrollPane1.setAutoscrolls(true);
         jScrollPane1.setViewportView(panel);
-
-//        jScrollPane1.createVerticalScrollBar();
-//        jScrollPane1.createHorizontalScrollBar();
-//        jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-//        jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        //Bei einem Klick auf das Kreuz der Oberflaeche wird das Programm beendet
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
+        //Den Komponenten des Menus werden ActionListener und Namen hinzugefuegt
         fileMenu.setText("File");
-
         openItem.setText("Open");
         openItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openItemActionPerformed(evt);
             }
         });
         fileMenu.add(openItem);
-
         saveMenu.setText("Save as");
-
         txtItem.setText("Txt");
         txtItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtItemActionPerformed(evt);
             }
         });
         saveMenu.add(txtItem);
-
         jpegItem.setText("jpeg");
         jpegItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jpegItemActionPerformed(evt);
             }
         });
         saveMenu.add(jpegItem);
-
         fileMenu.add(saveMenu);
-
         newTreeItem.setText("New Tree");
         newTreeItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newTreeItemActionPerformed(evt);
             }
         });
         fileMenu.add(newTreeItem);
-
         jMenuBar1.add(fileMenu);
-
         nodeMenu.setText("Node");
-
         addNodeItem.setText("add Node");
         addNodeItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addNodeItemActionPerformed(evt);
             }
         });
         nodeMenu.add(addNodeItem);
-
         delNodeItem.setText("delete Node");
         delNodeItem.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delNodeItemActionPerformed(evt);
             }
         });
         nodeMenu.add(delNodeItem);
-
         jMenuBar1.add(nodeMenu);
-
         setJMenuBar(jMenuBar1);
-
+        //Die Menuitems zum speichern und bearbeiten des Baums werden ausgegraut
         nodeMenu.setEnabled(false);
         saveMenu.setEnabled(false);
-
+        //Das Scrollpane wird der Oberflaeche hinzugefuegt
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -141,7 +133,7 @@ public class Gui extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }                  
 
     /**
      * @param message Die auszugebene Nachricht Eine Nachricht wird dem User in
@@ -176,16 +168,11 @@ public class Gui extends javax.swing.JFrame {
      */
     public void showGraph(ImageIcon img) {
         JLabel l = new JLabel(img);
-        if (img.getIconHeight() < jScrollPane1.getHeight() && img.getIconWidth() < jScrollPane1.getHeight()) {
-            l.setBounds(jScrollPane1.getBounds());
-        } else {
-            l.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
-
-        }
+        //Alle Komponenten des Panels werden entfernt
         panel.removeAll();
+        //Dem Panel wird ein Laben hinzugefuegt, welches dem Baum als Grafik enthalt
         panel.add(l);
-        panel.setBounds(0,0, img.getIconWidth(), img.getIconHeight());
-        repaint();
+        panel.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
     }
 
     /**
@@ -213,7 +200,7 @@ public class Gui extends javax.swing.JFrame {
     private void openItemActionPerformed(java.awt.event.ActionEvent evt) {
         //Ein Filebrower wird geoeffnet und die ausgewaehlte Datei wird erstellt.
         int returnVal = fileChooser.showOpenDialog(this);
-        if (returnVal == fileChooser.APPROVE_OPTION) {
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
 
             try {
@@ -261,7 +248,7 @@ public class Gui extends javax.swing.JFrame {
      */
     private void txtItemActionPerformed(java.awt.event.ActionEvent evt) {
         int returnVal = fileChooser.showOpenDialog(this);
-        if (returnVal == fileChooser.APPROVE_OPTION) {
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             //Daten des Graphes holen und in file laden und speichern
             Controler.getInstance().saveTreeAsTxt(file.getAbsolutePath());
@@ -277,11 +264,14 @@ public class Gui extends javax.swing.JFrame {
      */
     private void newTreeItemActionPerformed(java.awt.event.ActionEvent evt) {
         try {
+            //Der User wird in einem seperaten Fenster aufgefordert den ersten Wert des neuen Baums einzugeben
             String Value = JOptionPane.showInputDialog("Wert des ersten Knotens");
+            //Ein neuer Baum wird erzeugt, welcher den vom User eingegebenen Wert enthaelt
             Controler.getInstance().newTree(Integer.valueOf(Value));
+            //Die Menuitems zum speichern und bearbeiten des Baums werden aktiviert
             saveMenu.setEnabled(true);
             nodeMenu.setEnabled(true);
-        } catch (Exception e) {
+        } catch (HeadlessException | NumberFormatException e) {
             showHint("Falsche Eingabe! Bitte nur Integer");
         }
     }

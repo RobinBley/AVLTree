@@ -4,7 +4,7 @@ package avltree;
  *
  * @author Robin
  */
-public class GraphVizTest {
+public class Main {
 
     public static void main(String[] args) {
 

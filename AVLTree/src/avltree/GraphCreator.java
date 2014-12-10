@@ -13,10 +13,6 @@ public class GraphCreator {
 
     private GraphViz graph;
 
-    /**
-     *
-     * @author Robin
-     */
     public GraphCreator() {
 
         graph = new GraphViz();
