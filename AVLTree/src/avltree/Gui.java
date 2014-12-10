@@ -4,8 +4,6 @@ import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -51,12 +49,13 @@ public class Gui extends javax.swing.JFrame {
         addNodeItem = new javax.swing.JMenuItem();
         delNodeItem = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
-        
+
+        jScrollPane1.setAutoscrolls(true);
+
 //        jScrollPane1.createVerticalScrollBar();
 //        jScrollPane1.createHorizontalScrollBar();
 //        jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 //        jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         fileMenu.setText("File");
@@ -156,7 +155,7 @@ public class Gui extends javax.swing.JFrame {
             Controler.getInstance().addNode(Integer.valueOf(Value));
 
         } catch (Exception e) {
-            showHint("Falsche Eingabe!");
+            showHint("Falsche Eingabe! Bitte nur Integer");
         }
 
     }
@@ -164,10 +163,17 @@ public class Gui extends javax.swing.JFrame {
     /**
      * Eine Grafik wird in der Oberflache angezeigt
      *
-     * @param l Ein Label, welches den Graphen als Grafik enthaelt
+     * @param img Ein Image, welches den Graphen als Grafik enthaelt
      */
-    public void showGraph(JLabel l) {
-        removeAll();
+    public void showGraph(ImageIcon img) {
+        JLabel l = new JLabel(img);
+        if (img.getIconHeight() < jScrollPane1.getHeight() && img.getIconWidth() < jScrollPane1.getHeight()) {
+            l.setBounds(jScrollPane1.getBounds());
+        } else {
+            l.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
+
+        }
+        jScrollPane1.removeAll();
         jScrollPane1.add(l);
         repaint();
     }
@@ -184,7 +190,7 @@ public class Gui extends javax.swing.JFrame {
             Controler.getInstance().delNode(Integer.valueOf(Value));
 
         } catch (Exception e) {
-            showHint("Falsche Eingabe!");
+            showHint("Falsche Eingabe! Bitte nur Integer");
         }
     }
 
@@ -201,35 +207,25 @@ public class Gui extends javax.swing.JFrame {
             File file = fileChooser.getSelectedFile();
 
             try {
-                //Aktuelle Inhalte des Panels werden entfernt
-                jScrollPane1.removeAll();
                 //Wenn die ausgewaehlte datei von typ JPEG ist...
-                if (file.getPath().endsWith(".jpeg")) {
+                if (!file.getPath().endsWith(".txt")) {
                     //wird die geladene Datei als Grafik in das Panel geladen
-                    ImageIcon img = new ImageIcon(file.getAbsolutePath());
-                    JLabel l = new JLabel(img);
-                    if (img.getIconHeight() < jScrollPane1.getHeight() && img.getIconWidth() < jScrollPane1.getHeight()) {
-                        l.setBounds(jScrollPane1.getBounds());
-                    } else {
-                        l.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
-
-                    }
-                    jScrollPane1.add(l);
-
+                    showGraph(new ImageIcon(file.getAbsolutePath()));
                     nodeMenu.setEnabled(false);
+                    saveMenu.setEnabled(false);
 
                     //Wenn die ausgewaehlte datei von typ txt ist..
-                } else if (file.getPath().endsWith(".txt")) {
+                } else {
                     //werden die Daten eines Binaeren Baums geladen. Aus diesen Daten wird eine Grafik generiert. 
                     Controler.getInstance().loadGraph(file.getAbsolutePath());
                     nodeMenu.setEnabled(true);
-                } else {
-                    showHint("Falscher Dateityp");
+                    saveMenu.setEnabled(true);
+                    repaint();
+
                 }
-                repaint();
 
             } catch (Exception ex) {
-                ex.printStackTrace();
+                showHint("Falscher Dateityp");
             }
 
         }
@@ -279,9 +275,10 @@ public class Gui extends javax.swing.JFrame {
         try {
             String Value = JOptionPane.showInputDialog("Wert des ersten Knotens");
             Controler.getInstance().newTree(Integer.valueOf(Value));
-
+            saveMenu.setEnabled(true);
+            nodeMenu.setEnabled(true);
         } catch (Exception e) {
-            showHint("Falsche Eingabe!");
+            showHint("Falsche Eingabe! Bitte nur Integer");
         }
     }
 

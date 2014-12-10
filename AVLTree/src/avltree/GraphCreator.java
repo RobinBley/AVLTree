@@ -1,9 +1,11 @@
 package avltree;
 
 import java.awt.Image;
-import java.io.ByteArrayInputStream;
+import java.awt.image.RenderedImage;
+import java.io.File;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -17,35 +19,35 @@ public class GraphCreator {
      *
      * @author Robin
      */
-
-
     public GraphCreator() {
 
         graph = new GraphViz();
     }
 
     public void createGraph(AVLTree tree) {
-        
-        graph.addln(graph.start_graph());
-        AVLNode n = tree.root;
+        if (tree.root != null) {
+            graph = new GraphViz();
+            graph.addln(graph.start_graph());
+            graph.addln(String.valueOf(tree.root.getKey()));
+            AVLNode n = tree.root;
+            ArrayList<AVLNode> nextNodes = new ArrayList<>();
+            nextNodes.add(n);
+            while (!nextNodes.isEmpty()) {
+                n = nextNodes.get(0);
+                if (n.getLeftChild() != null) {
+                    addNode(n.getKey(), n.getLeftChild().getKey());
+                    nextNodes.add(n.getLeftChild());
+                }
+                if (n.getRightChild() != null) {
+                    addNode(n.getKey(), n.getRightChild().getKey());
+                    nextNodes.add(n.getRightChild());
+                }
+                nextNodes.remove(0);
 
-        ArrayList<AVLNode> nextNodes = new ArrayList<>();
-        nextNodes.add(n);
-        while (!nextNodes.isEmpty()) {
-            n = nextNodes.get(0);
-            if (n.getLeftChild() != null) {
-                addNode(n.getKey(), n.getLeftChild().getKey());
-                nextNodes.add(n.getLeftChild());
             }
-            if (n.getRightChild() != null) {
-                addNode(n.getKey(), n.getRightChild().getKey());
-                nextNodes.add(n.getRightChild());
-            }
-            nextNodes.remove(0);
 
+            graph.addln(graph.end_graph());
         }
-
-        graph.addln(graph.end_graph());
     }
 
     /**
@@ -62,6 +64,7 @@ public class GraphCreator {
 
     /**
      * Der aktuell geldene binaere Baum wird als JPEG-Datei gespeichert
+     *
      * @param path Pfad, an dem die Datei gespeichert werden soll
      * @return eine Bestaetigung ob die Dateioperation erfolgreich war
      */
@@ -74,16 +77,17 @@ public class GraphCreator {
             return false;
         }
     }
-    
+
     /**
      * Der aktuell geldene binaere Baum wird als txt-Datei gespeichert
+     *
      * @param path Pfad, an dem die Datei gespeichert werden soll
      * @return eine Bestaetigung ob die Dateioperation erfolgreich war
      */
-    public boolean saveGraphAsTxt(String path){
+    public boolean saveGraphAsTxt(String path) {
         try {
             graph.writeGraphToFile(graph.getGraph(graph.getDotSource(), "txt"), path);
-            
+
             return true;
         } catch (Exception e) {
             return false;
@@ -119,7 +123,7 @@ public class GraphCreator {
     /// MUSS NOCH ANGEPAST WERDEN
     public Image getGraph() {
         try {
-            return ImageIO.read(new ByteArrayInputStream(graph.getGraph(graph.getDotSource(), "jpeg")));
+            return new ImageIcon(graph.getGraph(graph.getDotSource(), "jpeg")).getImage();
         } catch (Exception e) {
             return null;
         }

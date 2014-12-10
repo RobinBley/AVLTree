@@ -1,7 +1,6 @@
 package avltree;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 /**
  *
@@ -94,15 +93,20 @@ public class Controler {
      */
     private void showCurrentGraph() {
         try {
-            //Ein Graph des aktuellen Baums wird erzeugt
-            creator.createGraph(tree);
-            //Der Graph wird als Grafik in ein Label geladen, welches der Oberflaeche uebergeben wird
-            ImageIcon img = new ImageIcon(creator.getGraph());
-            JLabel l = new JLabel(img);
-            l.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
-            gui.showGraph(l);
+            if (tree != null) {
+                //Ein Graph des aktuellen Baums wird erzeugt
+                creator.createGraph(tree);
+                //Der Graph wird als Grafik in ein Label geladen, welches der Oberflaeche uebergeben wird
+                ImageIcon img = new ImageIcon(creator.getGraph());
+                gui.showGraph(img);
+                System.out.println(img.getIconHeight());
+                System.out.println(img.getIconWidth());
+            } else {
+                gui.showHint("Keine Werte enthalten!");
+
+            }
         } catch (Exception e) {
-            e.printStackTrace();;
+            e.printStackTrace();
         }
 
     }
@@ -141,7 +145,12 @@ public class Controler {
         if (tree == null) {
             gui.showHint("Kein Baum geladen");
         } else {
-            ////////////////tree.deleteNode(node);
+            ///////////////////////////////////////////////////////////////////////////////
+//            if(tree.findNode(node) == null){
+//                gui.showHint("Node nicht enthalten");
+//            }
+//            tree.deleteNode(node);
+            //////////////////////////////////////////////////////////////////////////////
             showCurrentGraph();
         }
     }
