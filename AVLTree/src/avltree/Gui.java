@@ -1,9 +1,11 @@
 package avltree;
 
+import java.awt.Color;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -23,6 +25,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JMenuItem openItem;
     private javax.swing.JMenu saveMenu;
     private javax.swing.JMenuItem txtItem;
+    private JPanel panel;
 
     /**
      * Kmponenten der Oberflaeche werden Initialisiert.
@@ -49,8 +52,11 @@ public class Gui extends javax.swing.JFrame {
         addNodeItem = new javax.swing.JMenuItem();
         delNodeItem = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
+        panel = new JPanel();
+        panel.setBackground(Color.WHITE);
 
         jScrollPane1.setAutoscrolls(true);
+        jScrollPane1.setViewportView(panel);
 
 //        jScrollPane1.createVerticalScrollBar();
 //        jScrollPane1.createHorizontalScrollBar();
@@ -176,8 +182,9 @@ public class Gui extends javax.swing.JFrame {
             l.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
 
         }
-        jScrollPane1.removeAll();
-        jScrollPane1.add(l);
+        panel.removeAll();
+        panel.add(l);
+        panel.setBounds(0,0, img.getIconWidth(), img.getIconHeight());
         repaint();
     }
 
