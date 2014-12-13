@@ -10,7 +10,7 @@ public class Controler {
 
     private Gui gui;
     private GraphCreator creator;
-    private AVLTree tree = null;
+    private AvlTree tree = null;
     private static Controler Instance = null;
 
     /**
@@ -42,7 +42,7 @@ public class Controler {
 
     }
 
-    public AVLTree getTree() {
+    public AvlTree getTree() {
         return tree;
     }
 
@@ -56,7 +56,12 @@ public class Controler {
      * @param root der erste Knoten des Baums
      */
     public void newTree(int root) {
-        tree = new AVLTree(new AVLNode(root));
+        tree = new AvlTree();
+        try{
+            tree.addValue(root);
+        }catch(Exception e){
+            
+        }
         //Der neue aktuelle Graph wird in der Oberflaeche angezeigt
         this.showCurrentGraph();
     }
@@ -125,7 +130,7 @@ public class Controler {
         } else {
             try {
                 // sonst wird dem aktuellen Baum der neue Knoten hinzugefuegt
-                tree.insertNode(node);
+                tree.addValue(node);
                 //
             } catch (Exception e) {
                 return false;
@@ -150,7 +155,7 @@ public class Controler {
         } else {
             try {
                 //Wenn ein Baum existiert, wird geprueft ob der zuloeschende Wert existiert und geloescht
-                if (tree.findNode(node) == null) {
+                if (tree.hasValue(node)) {
                     gui.showHint("Node nicht enthalten");
                 }
                 ///////////////////////////////////////////////////////////////////////////////

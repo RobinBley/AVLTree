@@ -18,23 +18,23 @@ public class GraphCreator {
         graph = new GraphViz();
     }
 
-    public void createGraph(AVLTree tree) {
+    public void createGraph(AvlTree tree) {
         if (tree.root != null) {
             graph = new GraphViz();
             graph.addln(graph.start_graph());
-            graph.addln(String.valueOf(tree.root.getKey()));
-            AVLNode n = tree.root;
-            ArrayList<AVLNode> nextNodes = new ArrayList<>();
+            graph.addln(String.valueOf(tree.root.getValue()));
+            Node n = tree.root;
+            ArrayList<Node> nextNodes = new ArrayList<>();
             nextNodes.add(n);
             while (!nextNodes.isEmpty()) {
                 n = nextNodes.get(0);
-                if (n.getLeftChild() != null) {
-                    addNode(n.getKey(), n.getLeftChild().getKey());
-                    nextNodes.add(n.getLeftChild());
+                if (n.getLft() != null) {
+                    addNode(n.getValue(), n.getLft().getValue());
+                    nextNodes.add(n.getLft());
                 }
-                if (n.getRightChild() != null) {
-                    addNode(n.getKey(), n.getRightChild().getKey());
-                    nextNodes.add(n.getRightChild());
+                if (n.getRgt() != null) {
+                    addNode(n.getValue(), n.getRgt().getValue());
+                    nextNodes.add(n.getRgt());
                 }
                 nextNodes.remove(0);
 
