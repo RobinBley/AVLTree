@@ -155,12 +155,10 @@ public class Controler {
         } else {
             try {
                 //Wenn ein Baum existiert, wird geprueft ob der zuloeschende Wert existiert und geloescht
-                if (tree.hasValue(node)) {
+                if (!tree.hasValue(node)) {
                     gui.showHint("Node nicht enthalten");
                 }
-                ///////////////////////////////////////////////////////////////////////////////
-//            tree.deleteNode(node);
-                //////////////////////////////////////////////////////////////////////////////
+                tree.delValue(node);
                 showCurrentGraph();
             } catch (Exception ex) {
             }
